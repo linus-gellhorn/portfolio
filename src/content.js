@@ -1,3 +1,8 @@
+/* 
+All info should be able to be input here,
+which will then populate the corresponding components 
+*/
+
 const header = {
   homepage: "#",
   title: "Linus Gellhorn",
@@ -49,6 +54,10 @@ const projects = [
 
 const contact = {
   email: "linus.g@hotmail.com",
+  social: {
+    linkedin: "https://www.linkedin.com/in/linusgellhorn",
+    github: "https://github.com/linus-gellhorn",
+  },
 };
 
 export { header, about, skills, projects, contact };

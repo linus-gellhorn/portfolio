@@ -47,4 +47,5 @@ h4 {
 
 html {
   max-height: 100vh;
+  scroll-behavior: smooth;
 }
