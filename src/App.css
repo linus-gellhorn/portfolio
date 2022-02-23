@@ -11,13 +11,21 @@ main {
 .light {
   background-color: rgb(240, 231, 219);
   color: #333;
-  --clr-primary: black;
+  --clr-bg: #f0e9df;
+  --clr-bg-alt: #f5eedf;
+  --clr-fg: #555;
+  --clr-fg-alt: #333;
+  --clr-primary: #926640;
 }
 
 .dark {
   background-color: #23283e;
   color: #f3f0f5;
-  --clr-primary: white;
+  --clr-bg: #23283e;
+  --clr-bg-alt: #33384e;
+  --clr-fg: #bdbddd;
+  --clr-fg-alt: #cdcdff;
+  --clr-primary: #a09fff;
 }
 
 .link {

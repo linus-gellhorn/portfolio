@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { ThemeContext } from "./contexts/theme";
 import Header from "./components/Header/Header";
 import About from "./components/About/About";
+import Skills from "./components/Skills/Skills";
 import "./App.css";
 
 export default function App() {
@@ -12,6 +13,7 @@ export default function App() {
       <Header />
       <main>
         <About />
+        <Skills />
       </main>
     </div>
   );
