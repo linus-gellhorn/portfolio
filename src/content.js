@@ -22,4 +22,8 @@ const skills = [
   "Jest testing",
 ];
 
-export { header, about, skills };
+const contact = {
+  email: "linus.g@hotmail.com",
+};
+
+export { header, about, skills, contact };
