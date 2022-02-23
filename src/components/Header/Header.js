@@ -2,7 +2,7 @@ import { useContext } from "react";
 import Brightness2Icon from "@material-ui/icons/Brightness2";
 import WbSunnyRoundedIcon from "@material-ui/icons/WbSunnyRounded";
 import { ThemeContext } from "../../contexts/theme";
-import { header } from "../../portfolio";
+import { header } from "../../content";
 import "./Header.css";
 
 const Header = () => {
