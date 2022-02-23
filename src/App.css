@@ -11,13 +11,13 @@ main {
 .light {
   background-color: rgb(240, 231, 219);
   color: #333;
-  --clr-primary: #000000;
+  --clr-primary: black;
 }
 
 .dark {
   background-color: #23283e;
   color: #f3f0f5;
-  --clr-primary: #6ba8f7;
+  --clr-primary: white;
 }
 
 .link {
