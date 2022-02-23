@@ -1,10 +1,13 @@
 import { createContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import useSound from "use-sound";
+import pop from "../sounds/pop.wav";
 
 const ThemeContext = createContext();
 
 const ThemeProvider = ({ children }) => {
   const [themeName, setThemeName] = useState("light");
+  const [play] = useSound(pop);
 
   useEffect(() => {
     const isDark = localStorage.getItem("themeName") === "dark";
@@ -15,6 +18,7 @@ const ThemeProvider = ({ children }) => {
     const name = themeName === "dark" ? "light" : "dark";
     localStorage.setItem("themeName", name);
     setThemeName(name);
+    play();
   };
 
   return (
