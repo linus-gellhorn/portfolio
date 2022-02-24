@@ -37,7 +37,7 @@ const projects = [
     livePreview: "https://signlearner.netlify.app",
   },
   {
-    name: "Decionizer",
+    name: "Decisionizer",
     description: "A React app to help simplify decision making.",
     stack: ["TypeScript", "React", "React Flow", "Material UI"],
     sourceCode: "https://github.com/linus-gellhorn/decisionizer",

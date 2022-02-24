@@ -12,10 +12,7 @@ const Contact = () => {
     <section className="section contact center" id="contact">
       <h2 className="section__title">Connect</h2>
       <div className="contact-items">
-        <button
-          // className="contact-item"
-          onClick={() => window.open(`mailto:${email}`)}
-        >
+        <button onClick={() => window.open(`mailto:${email}`)}>
           <h5>Email me</h5>
         </button>
         {social && (

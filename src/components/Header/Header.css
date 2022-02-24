@@ -8,7 +8,6 @@ header {
 
 header,
 nav,
-nav button,
 nav ul {
   display: flex;
   align-items: center;
@@ -20,6 +19,10 @@ nav ul {
 
 nav li {
   margin-left: 1em;
+}
+
+nav button {
+  margin: 0;
 }
 
 nav li:hover,
