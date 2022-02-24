@@ -62,11 +62,3 @@ main {
   font-weight: 500;
   margin: 5em;
 }
-
-.github {
-  width: 50%;
-  margin: 4em auto;
-  padding: 2em 4em;
-  background: var(--github-bg);
-  border-radius: 1.5em;
-}
