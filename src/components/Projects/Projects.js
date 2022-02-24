@@ -26,16 +26,26 @@ const Projects = () => {
                 ))}
               </ul>
             )}
-            {project.sourceCode && (
-              <a href={project.sourceCode} className="link link--icon">
-                View on GitHub <br /> <GitHubIcon />
-              </a>
-            )}
-            <br />
             {project.livePreview && (
               <a href={project.livePreview} className="link link--icon">
-                View deployed site <br />
+                View live site <br />
                 <LaunchIcon />
+              </a>
+            )}
+            {project.image && (
+              <a href={project.livePreview} target="_blank" rel="noreferrer">
+                <img
+                  className="projects__image"
+                  src={project.image}
+                  alt="project screenshot"
+                />
+              </a>
+            )}
+
+            <br />
+            {project.sourceCode && (
+              <a href={project.sourceCode} className="link link--icon">
+                View GitHub Repo <br /> <GitHubIcon />
               </a>
             )}
           </div>
