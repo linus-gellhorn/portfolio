@@ -62,23 +62,24 @@ export default function App() {
     level4: "#39d353",
   };
 
-  console.log(themeName);
   return (
     <div className={`${themeName} app`}>
       <Header />
       <main>
         <About />
-        <div className="github">
-          <ActivityCalendar
-            data={contributions}
-            labels={{
-              totalCount: `{{count}} contributions in ${contributions.length} days`,
-            }}
-            theme={themeName === "dark" ? darkTheme : lightTheme}
-          >
-            <ReactTooltip html />
-          </ActivityCalendar>
-        </div>
+        {contributions && (
+          <div className="github">
+            <ActivityCalendar
+              data={contributions}
+              labels={{
+                totalCount: `{{count}} contributions in ${contributions.length} days`,
+              }}
+              theme={themeName === "dark" ? darkTheme : lightTheme}
+            >
+              <ReactTooltip html />
+            </ActivityCalendar>
+          </div>
+        )}
         <Projects />
         <Skills />
         <Contact />
