@@ -8,6 +8,8 @@ import Projects from "./components/Projects/Projects";
 import "./App.css";
 import ActivityCalendar from "react-activity-calendar";
 import ReactTooltip from "react-tooltip";
+import { sortDataByDate } from "./utils/sortDataByDate";
+import { makeDataSortable } from "./utils/makeDataSortable";
 
 export default function App() {
   const [{ themeName }] = useContext(ThemeContext);
@@ -21,12 +23,28 @@ export default function App() {
       );
       const jsonBody = await response.json();
 
-      setContributions(jsonBody.contributions);
+      let sortableData = makeDataSortable(jsonBody.contributions);
+      let sortedData = sortDataByDate(sortableData);
+
+      const today = new Date(new Date().setHours(0, 0, 0, 0));
+      const todayIndex = sortedData.findIndex(
+        (day) => day.date.toString() === today.toString()
+      );
+
+      const finalLastYearData = sortedData.slice(
+        todayIndex - 364,
+        todayIndex + 1
+      );
+
+      // re-transform data so it can be used in ActivityCalendar component
+      for (let day of finalLastYearData) {
+        day.date = new Date(day.date).toISOString().slice(0, 10);
+      }
+
+      setContributions(finalLastYearData.slice(185));
     };
     fetchGitHubData();
   }, []);
-
-  console.log(contributions);
 
   return (
     <div className={`${themeName} app`}>
@@ -34,7 +52,12 @@ export default function App() {
       <main>
         <About />
         <div className="github">
-          <ActivityCalendar data={contributions.slice(0, 365)}>
+          <ActivityCalendar
+            data={contributions}
+            labels={{
+              totalCount: `{{count}} contributions in ${contributions.length} days`,
+            }}
+          >
             <ReactTooltip html />
           </ActivityCalendar>
         </div>
