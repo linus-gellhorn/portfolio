@@ -46,6 +46,23 @@ export default function App() {
     fetchGitHubData();
   }, []);
 
+  const lightTheme = {
+    level0: "#ebedf0",
+    level1: "#9be9a8",
+    level2: "#40c463",
+    level3: "#30a14d",
+    level4: "#216e39",
+  };
+
+  const darkTheme = {
+    level0: "#161b22",
+    level1: "#0e4429",
+    level2: "#0e6d32",
+    level3: "#26a641",
+    level4: "#39d353",
+  };
+
+  console.log(themeName);
   return (
     <div className={`${themeName} app`}>
       <Header />
@@ -57,6 +74,7 @@ export default function App() {
             labels={{
               totalCount: `{{count}} contributions in ${contributions.length} days`,
             }}
+            theme={themeName === "dark" ? darkTheme : lightTheme}
           >
             <ReactTooltip html />
           </ActivityCalendar>
