@@ -58,3 +58,8 @@ main {
   font-weight: 500;
   margin: 5em;
 }
+
+.github {
+  width: 75%;
+  margin: 4em auto;
+}
