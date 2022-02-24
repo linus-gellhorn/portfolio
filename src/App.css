@@ -34,6 +34,7 @@ main {
   --clr-primary: #926640;
   --shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   --github-bg: white;
+  --headshot: cyan;
 }
 
 .dark {
@@ -46,6 +47,7 @@ main {
   --clr-primary: #a09fff;
   --shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px;
   --github-bg: #0d1117;
+  --headshot: #a09fff;
 }
 
 .link {
@@ -59,12 +61,4 @@ main {
   text-transform: lowercase;
   font-weight: 500;
   margin: 5em;
-}
-
-.github {
-  width: 50%;
-  margin: 4em auto;
-  padding: 2em 4em;
-  background: var(--github-bg);
-  border-radius: 1.5em;
 }
