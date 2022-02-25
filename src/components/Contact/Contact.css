@@ -22,3 +22,10 @@ button {
   margin-left: 1em;
   vertical-align: text-top;
 }
+
+.scroll-top {
+  position: fixed;
+  bottom: 2em;
+  right: 4em;
+  background-color: transparent;
+}

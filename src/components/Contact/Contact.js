@@ -2,11 +2,21 @@ import { contact } from "../../content";
 import "./Contact.css";
 import GitHubIcon from "@material-ui/icons/GitHub";
 import LinkedInIcon from "@material-ui/icons/LinkedIn";
+import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
+import { useState, useEffect } from "react";
 
 const Contact = () => {
   const { email, social } = contact;
 
-  if (!contact) return null;
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const toggleVisibility = () =>
+      window.pageYOffset > 500 ? setIsVisible(true) : setIsVisible(false);
+
+    window.addEventListener("scroll", toggleVisibility);
+    return () => window.removeEventListener("scroll", toggleVisibility);
+  }, []);
 
   return (
     <section className="section contact center" id="contact">
@@ -42,6 +52,13 @@ const Contact = () => {
           </>
         )}
       </div>
+      {isVisible && (
+        <div className="scroll-top">
+          <a href="#top">
+            <ArrowUpwardIcon fontSize="large" />
+          </a>
+        </div>
+      )}
     </section>
   );
 };
