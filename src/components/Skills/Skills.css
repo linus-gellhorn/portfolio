@@ -7,7 +7,8 @@
 }
 
 .skills ul {
-  max-width: 50%;
+  max-width: 550px;
+  width: 95%;
   margin: 0 auto;
   margin-top: 2em;
   display: flex;

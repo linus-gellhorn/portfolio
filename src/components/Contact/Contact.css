@@ -29,3 +29,9 @@ button {
   right: 4em;
   background-color: transparent;
 }
+
+@media only screen and (max-width: 480px) {
+  .scroll-top {
+    display: none;
+  }
+}

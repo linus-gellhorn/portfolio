@@ -5,3 +5,11 @@
   background: var(--github-bg);
   border-radius: 1.5em;
 }
+
+@media only screen and (max-width: 480px) {
+  .github {
+    width: 100%;
+    margin: 2em auto;
+    padding: 2em 2em;
+  }
+}
