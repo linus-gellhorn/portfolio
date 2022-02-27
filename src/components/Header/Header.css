@@ -6,6 +6,12 @@ header {
   justify-content: space-between;
 }
 
+@media (max-width: 600px) {
+  .header {
+    height: 6em;
+  }
+}
+
 header,
 nav,
 nav ul {
@@ -28,4 +34,44 @@ nav button {
 nav li:hover,
 nav button:hover {
   color: var(--clr-primary);
+}
+
+.nav__list {
+  margin-right: 1.5em;
+  display: flex;
+}
+.nav__list-item {
+  margin-left: 1.5em;
+}
+
+.nav__theme {
+  margin-top: 0.4em;
+}
+
+.app .nav__hamburger {
+  display: none;
+}
+
+@media (max-width: 600px) {
+  .nav__list {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+  }
+
+  .nav__list-item {
+    margin: 0.5em 0;
+  }
+
+  .app .nav__hamburger {
+    display: flex;
+    z-index: 2;
+    margin-left: 0.8em;
+  }
 }
