@@ -3,6 +3,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
 }
 
 .about__role {
@@ -22,4 +23,10 @@
   border: solid black 0.2em;
   background-color: var(--headshot);
   margin-top: 1em;
+}
+
+@media only screen and (max-width: 480px) {
+  .headshot {
+    width: 50%;
+  }
 }

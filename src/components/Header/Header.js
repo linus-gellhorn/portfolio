@@ -21,12 +21,12 @@ const Header = () => {
           {title}
         </a>
       </h3>
-      <nav>
+      <nav className="center">
         <ul
           className="nav__list"
           style={{ display: showNavList ? "flex" : null }}
         >
-          <li className="nav__list-item">
+          <li>
             <a
               href="#projects"
               onClick={toggleNavList}
@@ -35,7 +35,7 @@ const Header = () => {
               Projects
             </a>
           </li>
-          <li className="nav__list-item">
+          <li>
             <a
               href="#skills"
               onClick={toggleNavList}
@@ -44,7 +44,7 @@ const Header = () => {
               Skills
             </a>
           </li>
-          <li className="nav__list-item">
+          <li>
             <a
               href="#contact"
               onClick={toggleNavList}
