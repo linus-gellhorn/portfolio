@@ -7,6 +7,7 @@ import Contact from "./components/Contact/Contact";
 import Projects from "./components/Projects/Projects";
 import "./App.css";
 import GitHubContributions from "./components/GitHubContributions/GitHubContributions";
+import Spotify from "./components/Spotify/Spotify";
 
 export default function App() {
   const [{ themeName }] = useContext(ThemeContext);
@@ -19,6 +20,7 @@ export default function App() {
         <GitHubContributions />
         <Projects />
         <Skills />
+        <Spotify />
         <Contact />
       </main>
     </div>
