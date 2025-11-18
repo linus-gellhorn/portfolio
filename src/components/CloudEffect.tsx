@@ -26,12 +26,19 @@ export default function CloudEffect() {
     if (!containerRef.current) return;
 
     const container = containerRef.current;
+    const isMobile =
+      /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ||
+      window.innerWidth < 768;
+
     const renderer = new THREE.WebGLRenderer({
       alpha: true,
-      antialias: false, // Disabled for better performance
+      antialias: false,
       powerPreference: "high-performance",
     });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Cap at 2x for performance
+    const pixelRatio = isMobile
+      ? Math.min(window.devicePixelRatio, 1.5)
+      : Math.min(window.devicePixelRatio, 2);
+    renderer.setPixelRatio(pixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setClearColor(0x000000, 0);
     container.appendChild(renderer.domElement);
@@ -40,8 +47,9 @@ export default function CloudEffect() {
     const scene = new THREE.Scene();
     sceneRef.current = scene;
 
+    const cameraFOV = isMobile ? 70 : 60;
     const camera = new THREE.PerspectiveCamera(
-      60,
+      cameraFOV,
       window.innerWidth / window.innerHeight,
       0.1,
       100
@@ -289,36 +297,67 @@ export default function CloudEffect() {
     const geometry = new THREE.BoxGeometry(1, 1, 1);
     geometryRef.current = geometry;
 
-    const cloudPositions = [
-      {
-        x: -0.5,
-        y: 0.3,
-        z: 0,
-        direction: "left" as const,
-        scale: { x: 2.0, y: 0.8, z: 1 },
-      },
-      {
-        x: -0.3,
-        y: -0.3,
-        z: 0,
-        direction: "left" as const,
-        scale: { x: 1.5, y: 1, z: 1 },
-      },
-      {
-        x: 0.5,
-        y: -0.1,
-        z: 0,
-        direction: "right" as const,
-        scale: { x: 2.2, y: 1, z: 1 },
-      },
-      {
-        x: 0.4,
-        y: 0.5,
-        z: 0,
-        direction: "right" as const,
-        scale: { x: 1.4, y: 1, z: 1 },
-      },
-    ];
+    const cloudPositions = isMobile
+      ? [
+          {
+            x: -0.4,
+            y: 0.25,
+            z: 0,
+            direction: "left" as const,
+            scale: { x: 1.6, y: 0.7, z: 1 },
+          },
+          {
+            x: -0.25,
+            y: -0.25,
+            z: 0,
+            direction: "left" as const,
+            scale: { x: 1.2, y: 0.8, z: 1 },
+          },
+          {
+            x: 0.4,
+            y: -0.1,
+            z: 0,
+            direction: "right" as const,
+            scale: { x: 1.8, y: 0.9, z: 1 },
+          },
+          {
+            x: 0.3,
+            y: 0.4,
+            z: 0,
+            direction: "right" as const,
+            scale: { x: 1.2, y: 0.9, z: 1 },
+          },
+        ]
+      : [
+          {
+            x: -0.5,
+            y: 0.3,
+            z: 0,
+            direction: "left" as const,
+            scale: { x: 2.0, y: 0.8, z: 1 },
+          },
+          {
+            x: -0.3,
+            y: -0.3,
+            z: 0,
+            direction: "left" as const,
+            scale: { x: 1.5, y: 1, z: 1 },
+          },
+          {
+            x: 0.5,
+            y: -0.1,
+            z: 0,
+            direction: "right" as const,
+            scale: { x: 2.2, y: 1, z: 1 },
+          },
+          {
+            x: 0.4,
+            y: 0.5,
+            z: 0,
+            direction: "right" as const,
+            scale: { x: 1.4, y: 1, z: 1 },
+          },
+        ];
     cloudPositionsRef.current = cloudPositions;
 
     const meshes: THREE.Mesh[] = [];
@@ -334,7 +373,7 @@ export default function CloudEffect() {
           threshold: { value: 0.25 },
           opacity: { value: 0.3 },
           range: { value: 0.1 },
-          steps: { value: 75 }, // Balanced quality and performance
+          steps: { value: 75 },
           frame: { value: 0 },
         },
         vertexShader,
@@ -356,7 +395,11 @@ export default function CloudEffect() {
     materialsRef.current = materials;
 
     const handleResize = () => {
+      const newIsMobile =
+        /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ||
+        window.innerWidth < 768;
       camera.aspect = window.innerWidth / window.innerHeight;
+      camera.fov = newIsMobile ? 70 : 60;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
     };
@@ -365,9 +408,15 @@ export default function CloudEffect() {
 
     const handleScroll = () => {
       const scrollY = window.scrollY;
-      const maxScroll =
-        document.documentElement.scrollHeight - window.innerHeight;
-      scrollProgressRef.current = Math.min(scrollY / (maxScroll * 0.6), 1);
+      if (isMobile) {
+        const spacerHeight = window.innerHeight * 1.65;
+        const animationDistance = spacerHeight * 0.85;
+        scrollProgressRef.current = Math.min(scrollY / animationDistance, 1);
+      } else {
+        const maxScroll =
+          document.documentElement.scrollHeight - window.innerHeight;
+        scrollProgressRef.current = Math.min(scrollY / (maxScroll * 0.6), 1);
+      }
 
       const cameraZ = initialCameraZRef.current + scrollProgressRef.current * 2;
       camera.position.z = cameraZ;
@@ -376,12 +425,20 @@ export default function CloudEffect() {
     window.addEventListener("scroll", handleScroll, { passive: true });
 
     const handleMouseMove = (event: MouseEvent) => {
-      // Normalize mouse position to -1 to 1 range
       mouseRef.current.x = (event.clientX / window.innerWidth) * 2 - 1;
       mouseRef.current.y = -(event.clientY / window.innerHeight) * 2 + 1;
     };
 
+    const handleTouchMove = (event: TouchEvent) => {
+      if (event.touches.length > 0) {
+        const touch = event.touches[0];
+        mouseRef.current.x = (touch.clientX / window.innerWidth) * 2 - 1;
+        mouseRef.current.y = -(touch.clientY / window.innerHeight) * 2 + 1;
+      }
+    };
+
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    window.addEventListener("touchmove", handleTouchMove, { passive: true });
 
     const animate = () => {
       if (meshesRef.current.length > 0 && camera && renderer && scene) {
@@ -398,40 +455,51 @@ export default function CloudEffect() {
           imagePlaneRef.current &&
           imagePlaneRef.current.material instanceof THREE.MeshBasicMaterial
         ) {
-          // Fade in from 0px to 100px scroll
           const scrollY = window.scrollY;
-          const logoOpacity = Math.min(scrollY / 100, 1);
-          imagePlaneRef.current.material.opacity = logoOpacity;
+          const fadeInDistance = isMobile ? 80 : 100;
+          let logoOpacity = Math.min(scrollY / fadeInDistance, 1);
 
-          // Zoom happens throughout entire scroll
-          const zoomScale = 1 + scrollProgressRef.current * 20; // Scale from 1x to 26x
+          const initialScale = isMobile ? 0.5 : 1;
+          const maxScale = isMobile ? 18 : 20;
+          const zoomScale = initialScale + scrollProgressRef.current * maxScale;
           imagePlaneRef.current.scale.set(zoomScale, zoomScale, 1);
 
-          // Move toward camera and then past it
-          const zoomZ = -2 + scrollProgressRef.current * 12; // Move from z=-2 to z=10 (well past camera)
+          const zoomZ = -2 + scrollProgressRef.current * (isMobile ? 10 : 12);
           imagePlaneRef.current.position.z = zoomZ;
+
+          if (zoomZ > camera.position.z) {
+            const fadeOutStart = 0.85;
+            if (scrollProgressRef.current > fadeOutStart) {
+              const fadeOutProgress =
+                (scrollProgressRef.current - fadeOutStart) / (1 - fadeOutStart);
+              logoOpacity = Math.max(0, logoOpacity * (1 - fadeOutProgress));
+            }
+          }
+
+          imagePlaneRef.current.material.opacity = logoOpacity;
         }
 
         meshesRef.current.forEach((mesh, index) => {
           const initialPos = cloudPositionsRef.current[index];
 
-          // Top clouds (higher y position) move away faster than bottom clouds
-          // Cloud 0: y=0.3, Cloud 3: y=0.5 (top clouds)
-          // Cloud 1: y=-0.3, Cloud 2: y=0 (bottom clouds)
-          const isTopCloud = initialPos.y > 0.2; // Top clouds have y > 0.2
-          const scrollZSpeed = isTopCloud ? 15 : 8; // Top clouds move faster
+          const isTopCloud = initialPos.y > 0.2;
+          const scrollZSpeed = isMobile
+            ? isTopCloud
+              ? 12
+              : 6
+            : isTopCloud
+              ? 15
+              : 8;
           const scrollZ = scrollProgressRef.current * scrollZSpeed;
 
-          // Horizontal drift based on scroll
-          const scrollOffset = scrollProgressRef.current * 10; // Drift further apart
+          const scrollOffset = scrollProgressRef.current * (isMobile ? 8 : 10);
           const direction = initialPos.direction === "left" ? -1 : 1;
           const scrollX = initialPos.x + direction * scrollOffset;
 
-          // Gentle floating animation - reduced vertical movement
           const floatSpeed = 0.3;
-          const floatAmount = 0.05; // Reduced from 0.15 to 0.05
+          const floatAmount = isMobile ? 0.03 : 0.05;
           const driftSpeed = 0.2;
-          const driftAmount = 0.1;
+          const driftAmount = isMobile ? 0.08 : 0.1;
 
           const floatY =
             initialPos.y +
@@ -440,18 +508,15 @@ export default function CloudEffect() {
             scrollX +
             Math.cos(time * 0.001 * driftSpeed + index * 0.5) * driftAmount;
 
-          // Mouse interaction - each cloud reacts based on distance to mouse
           const cloudCenterX = driftX;
           const cloudCenterY = floatY;
 
-          // Calculate distance from mouse to cloud center
           const dx = mouseRef.current.x - cloudCenterX;
           const dy = mouseRef.current.y - cloudCenterY;
           const distance = Math.sqrt(dx * dx + dy * dy);
 
-          // Push cloud away from mouse when close
-          const maxDistance = 1.5; // Max distance for mouse influence
-          const strength = 0.05; // How strong the push is (very subtle)
+          const maxDistance = isMobile ? 2.0 : 1.5;
+          const strength = isMobile ? 0.03 : 0.05;
 
           let targetOffsetX = 0;
           let targetOffsetY = 0;
@@ -462,8 +527,7 @@ export default function CloudEffect() {
             targetOffsetY = -(dy / distance) * force;
           }
 
-          // Smooth interpolation (lerp) towards target offset
-          const lerpFactor = 0.1; // Lower = smoother/slower, higher = snappier
+          const lerpFactor = isMobile ? 0.08 : 0.1;
           const currentOffset = cloudMouseOffsetsRef.current[index];
           currentOffset.x += (targetOffsetX - currentOffset.x) * lerpFactor;
           currentOffset.y += (targetOffsetY - currentOffset.y) * lerpFactor;
@@ -487,6 +551,7 @@ export default function CloudEffect() {
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("touchmove", handleTouchMove);
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }

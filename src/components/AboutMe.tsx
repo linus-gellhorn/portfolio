@@ -7,7 +7,7 @@ export default function AboutMe() {
 
   return (
     <div
-      className="relative z-10 min-h-[50vh]"
+      className="relative z-10 min-h-[45vh]"
       style={{ backgroundColor: "#5da5d5" }}
     >
       <div className="flex items-center justify-center px-6">
