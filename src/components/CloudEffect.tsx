@@ -26,11 +26,7 @@ export default function CloudEffect() {
     if (!containerRef.current) return;
 
     const container = containerRef.current;
-    let renderer: THREE.WebGLRenderer;
-    let scene: THREE.Scene;
-    let camera: THREE.PerspectiveCamera;
-
-    renderer = new THREE.WebGLRenderer({
+    const renderer = new THREE.WebGLRenderer({
       alpha: true,
       antialias: false, // Disabled for better performance
       powerPreference: "high-performance",
@@ -41,10 +37,10 @@ export default function CloudEffect() {
     container.appendChild(renderer.domElement);
     rendererRef.current = renderer;
 
-    scene = new THREE.Scene();
+    const scene = new THREE.Scene();
     sceneRef.current = scene;
 
-    camera = new THREE.PerspectiveCamera(
+    const camera = new THREE.PerspectiveCamera(
       60,
       window.innerWidth / window.innerHeight,
       0.1,
