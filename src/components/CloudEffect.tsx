@@ -1,6 +1,6 @@
-import { useEffect, useRef } from 'react';
-import * as THREE from 'three';
-import { ImprovedNoise } from 'three/addons/math/ImprovedNoise.js';
+import { useEffect, useRef } from "react";
+import * as THREE from "three";
+import { ImprovedNoise } from "three/addons/math/ImprovedNoise.js";
 
 export default function CloudEffect() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -15,7 +15,9 @@ export default function CloudEffect() {
   const geometryRef = useRef<THREE.BoxGeometry | null>(null);
   const scrollProgressRef = useRef<number>(0);
   const initialCameraZRef = useRef<number>(1.5);
-  const cloudPositionsRef = useRef<Array<{ x: number; y: number; z: number; direction: 'left' | 'right' }>>([]);
+  const cloudPositionsRef = useRef<
+    Array<{ x: number; y: number; z: number; direction: "left" | "right" }>
+  >([]);
   const imagePlaneRef = useRef<THREE.Mesh | null>(null);
   const mouseRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const cloudMouseOffsetsRef = useRef<Array<{ x: number; y: number }>>([]);
@@ -31,7 +33,7 @@ export default function CloudEffect() {
     renderer = new THREE.WebGLRenderer({
       alpha: true,
       antialias: false, // Disabled for better performance
-      powerPreference: 'high-performance'
+      powerPreference: "high-performance",
     });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Cap at 2x for performance
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -60,21 +62,21 @@ export default function CloudEffect() {
 
     // Load and add the linus-gellhorn SVG
     // Load SVG and convert to high-quality texture
-    fetch('/linus-gellhorn.svg')
-      .then(response => response.text())
-      .then(svgText => {
+    fetch("/linus-gellhorn.svg")
+      .then((response) => response.text())
+      .then((svgText) => {
         const img = new Image();
-        const blob = new Blob([svgText], { type: 'image/svg+xml' });
+        const blob = new Blob([svgText], { type: "image/svg+xml" });
         const url = URL.createObjectURL(blob);
 
         img.onload = () => {
           // Create a high-resolution canvas
-          const canvas = document.createElement('canvas');
+          const canvas = document.createElement("canvas");
           const scale = 4; // 4x resolution for crisp quality
           canvas.width = img.width * scale;
           canvas.height = img.height * scale;
 
-          const ctx = canvas.getContext('2d');
+          const ctx = canvas.getContext("2d");
           if (ctx) {
             ctx.scale(scale, scale);
             ctx.drawImage(img, 0, 0);
@@ -106,7 +108,12 @@ export default function CloudEffect() {
       });
 
     // Function to generate a unique cloud texture
-    const generateCloudTexture = (seed: number, scaleX: number, scaleY: number, scaleZ: number) => {
+    const generateCloudTexture = (
+      seed: number,
+      scaleX: number,
+      scaleY: number,
+      scaleZ: number
+    ) => {
       const size = 96;
       const data = new Uint8Array(size * size * size);
       let i = 0;
@@ -121,16 +128,17 @@ export default function CloudEffect() {
               vector
                 .set(x, y, z)
                 .subScalar(size / 2)
-                .divideScalar(size).length();
+                .divideScalar(size)
+                .length();
 
             // Add seed offset to generate different patterns
             data[i] =
               (128 +
                 128 *
                   perlin.noise(
-                    (x * scaleX) + seed,
-                    (y * scaleY) + seed * 0.5,
-                    (z * scaleZ) + seed * 0.3
+                    x * scaleX + seed,
+                    y * scaleY + seed * 0.5,
+                    z * scaleZ + seed * 0.3
                   )) *
               d *
               d;
@@ -150,10 +158,10 @@ export default function CloudEffect() {
 
     // Generate unique textures for each cloud with same scale for consistent brightness
     const cloudTextures = [
-      generateCloudTexture(0, 0.045, 0.05, 0.045),    // Cloud 1 (left top)
-      generateCloudTexture(50, 0.045, 0.05, 0.045),   // Cloud 2 (left bottom)
-      generateCloudTexture(100, 0.045, 0.05, 0.045),  // Cloud 3 (right middle)
-      generateCloudTexture(150, 0.045, 0.05, 0.045),  // Cloud 4 (right top)
+      generateCloudTexture(0, 0.045, 0.05, 0.045), // Cloud 1 (left top)
+      generateCloudTexture(50, 0.045, 0.05, 0.045), // Cloud 2 (left bottom)
+      generateCloudTexture(100, 0.045, 0.05, 0.045), // Cloud 3 (right middle)
+      generateCloudTexture(150, 0.045, 0.05, 0.045), // Cloud 4 (right top)
     ];
     texturesRef.current = cloudTextures;
 
@@ -286,10 +294,34 @@ export default function CloudEffect() {
     geometryRef.current = geometry;
 
     const cloudPositions = [
-      { x: -0.5, y: 0.3, z: 0, direction: 'left' as const, scale: { x: 2.0, y: 0.8, z: 1 } },
-      { x: -0.3, y: -0.3, z: 0, direction: 'left' as const, scale: { x: 1.5, y: 1, z: 1 } },
-      { x: 0.5, y: -0.1, z: 0, direction: 'right' as const, scale: { x: 2.2, y: 1, z: 1 } },
-      { x: 0.4, y: 0.5, z: 0, direction: 'right' as const, scale: { x: 1.4, y: 1, z: 1 } },
+      {
+        x: -0.5,
+        y: 0.3,
+        z: 0,
+        direction: "left" as const,
+        scale: { x: 2.0, y: 0.8, z: 1 },
+      },
+      {
+        x: -0.3,
+        y: -0.3,
+        z: 0,
+        direction: "left" as const,
+        scale: { x: 1.5, y: 1, z: 1 },
+      },
+      {
+        x: 0.5,
+        y: -0.1,
+        z: 0,
+        direction: "right" as const,
+        scale: { x: 2.2, y: 1, z: 1 },
+      },
+      {
+        x: 0.4,
+        y: 0.5,
+        z: 0,
+        direction: "right" as const,
+        scale: { x: 1.4, y: 1, z: 1 },
+      },
     ];
     cloudPositionsRef.current = cloudPositions;
 
@@ -333,18 +365,19 @@ export default function CloudEffect() {
       renderer.setSize(window.innerWidth, window.innerHeight);
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
     const handleScroll = () => {
       const scrollY = window.scrollY;
-      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const maxScroll =
+        document.documentElement.scrollHeight - window.innerHeight;
       scrollProgressRef.current = Math.min(scrollY / (maxScroll * 0.6), 1);
-      
+
       const cameraZ = initialCameraZRef.current + scrollProgressRef.current * 2;
       camera.position.z = cameraZ;
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener("scroll", handleScroll, { passive: true });
 
     const handleMouseMove = (event: MouseEvent) => {
       // Normalize mouse position to -1 to 1 range
@@ -352,7 +385,7 @@ export default function CloudEffect() {
       mouseRef.current.y = -(event.clientY / window.innerHeight) * 2 + 1;
     };
 
-    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
 
     const animate = () => {
       if (meshesRef.current.length > 0 && camera && renderer && scene) {
@@ -365,7 +398,10 @@ export default function CloudEffect() {
         });
 
         // Update image scale and position based on scroll (happens throughout)
-        if (imagePlaneRef.current && imagePlaneRef.current.material instanceof THREE.MeshBasicMaterial) {
+        if (
+          imagePlaneRef.current &&
+          imagePlaneRef.current.material instanceof THREE.MeshBasicMaterial
+        ) {
           // Fade in from 0px to 100px scroll
           const scrollY = window.scrollY;
           const logoOpacity = Math.min(scrollY / 100, 1);
@@ -392,8 +428,8 @@ export default function CloudEffect() {
 
           // Horizontal drift based on scroll
           const scrollOffset = scrollProgressRef.current * 10; // Drift further apart
-          const direction = initialPos.direction === 'left' ? -1 : 1;
-          const scrollX = initialPos.x + (direction * scrollOffset);
+          const direction = initialPos.direction === "left" ? -1 : 1;
+          const scrollX = initialPos.x + direction * scrollOffset;
 
           // Gentle floating animation - reduced vertical movement
           const floatSpeed = 0.3;
@@ -401,8 +437,12 @@ export default function CloudEffect() {
           const driftSpeed = 0.2;
           const driftAmount = 0.1;
 
-          const floatY = initialPos.y + Math.sin(time * 0.001 * floatSpeed + index) * floatAmount;
-          const driftX = scrollX + Math.cos(time * 0.001 * driftSpeed + index * 0.5) * driftAmount;
+          const floatY =
+            initialPos.y +
+            Math.sin(time * 0.001 * floatSpeed + index) * floatAmount;
+          const driftX =
+            scrollX +
+            Math.cos(time * 0.001 * driftSpeed + index * 0.5) * driftAmount;
 
           // Mouse interaction - each cloud reacts based on distance to mouse
           const cloudCenterX = driftX;
@@ -432,7 +472,11 @@ export default function CloudEffect() {
           currentOffset.x += (targetOffsetX - currentOffset.x) * lerpFactor;
           currentOffset.y += (targetOffsetY - currentOffset.y) * lerpFactor;
 
-          mesh.position.set(driftX + currentOffset.x, floatY + currentOffset.y, initialPos.z + scrollZ);
+          mesh.position.set(
+            driftX + currentOffset.x,
+            floatY + currentOffset.y,
+            initialPos.z + scrollZ
+          );
         });
 
         frameRef.current++;
@@ -444,9 +488,9 @@ export default function CloudEffect() {
     animate();
 
     return () => {
-      window.removeEventListener('resize', handleResize);
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("mousemove", handleMouseMove);
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
@@ -462,7 +506,9 @@ export default function CloudEffect() {
           (mesh.material as THREE.Material).dispose();
         }
       });
-      materialsRef.current.forEach((mat: THREE.RawShaderMaterial) => mat.dispose());
+      materialsRef.current.forEach((mat: THREE.RawShaderMaterial) =>
+        mat.dispose()
+      );
       renderer.dispose();
       texturesRef.current.forEach((tex) => tex.dispose());
       if (geometryRef.current) geometryRef.current.dispose();
@@ -477,4 +523,3 @@ export default function CloudEffect() {
     />
   );
 }
-
