@@ -25,10 +25,7 @@ const projects: {
 
 export default function Projects() {
   return (
-    <div
-      className="relative z-10 min-h-screen"
-      style={{ backgroundColor: "#5da5d5" }}
-    >
+    <div className="relative z-10" style={{ backgroundColor: "#5da5d5" }}>
       <div className="flex items-center justify-center px-6 py-20">
         <div className="max-w-6xl mx-auto w-full">
           <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center text-white drop-shadow-lg">

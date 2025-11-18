@@ -86,10 +86,7 @@ const experience: {
 
 export default function Experience() {
   return (
-    <div
-      className="relative z-10 min-h-screen"
-      style={{ backgroundColor: "#5da5d5" }}
-    >
+    <div className="relative z-10" style={{ backgroundColor: "#5da5d5" }}>
       <div className="flex items-center justify-center px-6 py-20">
         <div className="max-w-4xl mx-auto w-full">
           <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center text-white drop-shadow-lg">
@@ -99,11 +96,11 @@ export default function Experience() {
             {experience.map((exp) => (
               <div
                 key={exp.company}
-                className="bg-white/95 backdrop-blur-sm rounded-2xl p-8 shadow-2xl border border-white/20 hover:shadow-3xl hover:scale-[1.01] transition-all duration-300"
+                className="bg-white/95 backdrop-blur-sm rounded-2xl p-4 md:p-8 shadow-2xl border border-white/20 hover:shadow-3xl hover:scale-[1.01] transition-all duration-300"
               >
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                  <div className="flex items-center gap-4">
-                    <div className="h-16 w-16 rounded-full bg-white flex items-center justify-center shadow-md p-3 flex-shrink-0">
+                  <div className="flex items-center gap-3 md:gap-4">
+                    <div className="h-12 w-12 md:h-16 md:w-16 rounded-full bg-white flex items-center justify-center shadow-md p-2 md:p-3 flex-shrink-0">
                       <a
                         href={exp.link}
                         target="_blank"
@@ -117,16 +114,16 @@ export default function Experience() {
                       href={exp.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-2xl font-bold text-gray-900 hover:text-blue-600 transition-colors"
+                      className="text-lg md:text-2xl font-bold text-gray-900 hover:text-blue-600 transition-colors break-words"
                     >
                       {exp.company}
                     </a>
                   </div>
-                  <div className="flex flex-col gap-2 items-end">
-                    <span className="text-gray-600 font-medium text-sm md:text-base whitespace-nowrap">
+                  <div className="flex flex-col gap-2 items-start md:items-end">
+                    <span className="text-gray-600 font-medium text-sm md:text-base">
                       {exp.title}
                     </span>
-                    <span className="text-gray-600 font-medium text-sm md:text-base whitespace-nowrap">
+                    <span className="text-gray-600 font-medium text-sm md:text-base">
                       {exp.date}
                     </span>
                   </div>

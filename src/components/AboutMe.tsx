@@ -51,11 +51,11 @@ export default function AboutMe() {
 
             <div className="text-white text-center md:text-left">
               <h1 className="text-4xl md:text-5xl font-bold mb-4 drop-shadow-lg">
-                Welcome to my site 👋
+                Hello, I'm Linus 👋
               </h1>
               <p className="text-lg md:text-xl leading-relaxed mb-4">
-                Hi, I'm Linus. I'm a software developer and have been coding for
-                the last 4 years.
+                I'm a software developer and have been coding for the last 4
+                years.
               </p>
               <p className="text-lg md:text-xl leading-relaxed">
                 My professional experience is in startups, mostly working on B2B
