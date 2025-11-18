@@ -20,7 +20,10 @@ export default function Credits() {
   if (credits.length === 0) return null;
 
   return (
-    <div className="relative z-10 py-8 px-6">
+    <div
+      className="relative z-10 py-8 px-6 pb-16"
+      style={{ backgroundColor: "#5da5d5" }}
+    >
       <div className="max-w-6xl mx-auto">
         <div className="text-center text-sm text-white/90">
           <span className="block mb-2">Credits & Inspiration:</span>

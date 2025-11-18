@@ -38,7 +38,7 @@ export default function App() {
       )}
 
       <CloudEffect />
-      <div className="font-sans">
+      <div className="font-sans" style={{ backgroundColor: "#5da5d5" }}>
         <div className="h-[165vh]"></div>
         <AboutMe />
         <Projects />
