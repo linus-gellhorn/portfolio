@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import AboutMe from "./components/AboutMe";
 import CloudEffect from "./components/CloudEffect";
+import Credits from "./components/Credits";
 import Experience from "./components/Experience";
 import Projects from "./components/Projects";
 
@@ -18,14 +19,10 @@ export default function App() {
 
   return (
     <>
-      <div className="fixed top-4 left-4 z-50 bg-black/80 text-white px-4 py-2 rounded-lg font-mono text-sm backdrop-blur-sm">
-        <div className="font-semibold">Scroll: {Math.round(scrollY)}px</div>
-      </div>
-
       {scrollY < 50 && (
         <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 animate-bounce">
           <svg
-            className="w-6 h-6 text-white drop-shadow-lg"
+            className="w-8 h-8 text-white drop-shadow-lg"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -46,6 +43,7 @@ export default function App() {
         <AboutMe />
         <Projects />
         <Experience />
+        <Credits />
       </div>
     </>
   );
