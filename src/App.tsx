@@ -38,8 +38,8 @@ export default function App() {
       )}
 
       <CloudEffect />
-      <div className="relative min-h-[300vh] font-sans">
-        <div className="h-[160vh]"></div>
+      <div className="font-sans">
+        <div className="h-[165vh]"></div>
         <AboutMe />
         <Projects />
         <Experience />
