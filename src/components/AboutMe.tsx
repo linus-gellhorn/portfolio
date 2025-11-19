@@ -1,9 +1,32 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import profileSimpsons from "../images/profile-simpsons.png";
 import profile from "../images/profile.png";
 
 export default function AboutMe() {
   const [isHovered, setIsHovered] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  const handleMouseEnter = () => {
+    if (!isMobile) setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    if (!isMobile) setIsHovered(false);
+  };
+
+  const handleClick = () => {
+    if (isMobile) setIsHovered((prev) => !prev);
+  };
 
   return (
     <div
@@ -16,9 +39,9 @@ export default function AboutMe() {
             <div className="flex flex-col items-center gap-2">
               <div
                 className="relative flex-shrink-0 w-48 h-48 md:w-64 md:h-64 rounded-full border-4 border-white shadow-2xl overflow-hidden cursor-pointer"
-                onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => setIsHovered(false)}
-                onClick={() => setIsHovered(!isHovered)}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                onClick={handleClick}
               >
                 <img
                   src={profile}
