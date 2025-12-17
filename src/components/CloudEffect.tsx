@@ -1,3 +1,4 @@
+import Lenis from "lenis";
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { ImprovedNoise } from "three/addons/math/ImprovedNoise.js";
@@ -21,6 +22,7 @@ export default function CloudEffect() {
   const imagePlaneRef = useRef<THREE.Mesh | null>(null);
   const mouseRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const cloudMouseOffsetsRef = useRef<Array<{ x: number; y: number }>>([]);
+  const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -406,23 +408,33 @@ export default function CloudEffect() {
 
     window.addEventListener("resize", handleResize);
 
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
+    const lenis = new Lenis({
+      lerp: isMobile ? 0.08 : 0.1,
+      duration: isMobile ? 1.4 : 1.2,
+      smoothWheel: true,
+      touchMultiplier: isMobile ? 1.5 : 2,
+    });
+    lenisRef.current = lenis;
+
+    const handleScroll = (scroll: number) => {
+      const scrollY = scroll;
       if (isMobile) {
         const spacerHeight = window.innerHeight * 1.65;
-        const animationDistance = spacerHeight * 0.85;
+        const animationDistance = spacerHeight * 2.0;
         scrollProgressRef.current = Math.min(scrollY / animationDistance, 1);
       } else {
         const maxScroll =
           document.documentElement.scrollHeight - window.innerHeight;
-        scrollProgressRef.current = Math.min(scrollY / (maxScroll * 0.6), 1);
+        scrollProgressRef.current = Math.min(scrollY / (maxScroll * 1.2), 1);
       }
 
       const cameraZ = initialCameraZRef.current + scrollProgressRef.current * 2;
       camera.position.z = cameraZ;
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
+    lenis.on("scroll", ({ scroll }: { scroll: number }) => {
+      handleScroll(scroll);
+    });
 
     const handleMouseMove = (event: MouseEvent) => {
       mouseRef.current.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -440,10 +452,13 @@ export default function CloudEffect() {
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
     window.addEventListener("touchmove", handleTouchMove, { passive: true });
 
-    const animate = () => {
+    const animate = (time: number) => {
+      if (lenisRef.current) {
+        lenisRef.current.raf(time);
+      }
+
       if (meshesRef.current.length > 0 && camera && renderer && scene) {
         const cameraPos = camera.position;
-        const time = performance.now();
 
         materialsRef.current.forEach((mat) => {
           mat.uniforms.cameraPos.value.copy(cameraPos);
@@ -545,11 +560,13 @@ export default function CloudEffect() {
       animationFrameRef.current = requestAnimationFrame(animate);
     };
 
-    animate();
+    requestAnimationFrame(animate);
 
     return () => {
       window.removeEventListener("resize", handleResize);
-      window.removeEventListener("scroll", handleScroll);
+      if (lenisRef.current) {
+        lenisRef.current.destroy();
+      }
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("touchmove", handleTouchMove);
       if (animationFrameRef.current) {
